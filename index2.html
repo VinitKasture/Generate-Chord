@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    *{
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body{
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+    }
+    #chord{
+      height: fit-content;
+      font-size: 30vh;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+  </style>
+</head>
+<body>
+  <h1 id="chord"></h1>
+  <script type="text/javascript">
+    let chord  = document.getElementById("chord");
+
+    function generateRandomNumber(a, b){
+      let randomNumber = Math.floor(Math.random() * (b - a + 1)) + a;
+      return randomNumber;
+    }
+
+    function getRandomBoolean() {
+      return Math.random() >= 0.5;
+  }
+
+  function generateChord(){
+
+    const possibleChords = ["A", "B", "C", "D", "E", "F", "G"];
+    const chordVariations = ["#", "m"]
+
+    let addVariation = getRandomBoolean() ? chordVariations[getRandomBoolean() ? 0 : 1] : "";
+    let finalChord = possibleChords[generateRandomNumber(0, possibleChords.length - 1)] + addVariation;
+
+    
+   if(finalChord == "E#" || finalChord == "B#"){
+    return generateChord()
+   }
+
+    return finalChord ;
+  } 
+
+  chord.innerHTML = generateChord();
+
+  setInterval(() => {
+   const newChord = generateChord(); 
+    chord.innerHTML = newChord;
+}, 3000);
+  </script>
+</body>
+</html>
