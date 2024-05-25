@@ -3,20 +3,28 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title>Chord Gen</title>
   <style>
-    *{
+    * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
     }
-    body{
+    body {
       width: 100%;
       height: 100%;
       display: flex;
       justify-content: center;
+      align-items: center;
+      flex-direction: column;
     }
-    #chord{
+    #speed {
+      position: absolute;
+      top: 1rem;
+      left: 1rem;
+      font-size: 5vh;
+    }
+    #chord {
       height: fit-content;
       font-size: 30vh;
       font-family: Arial, Helvetica, sans-serif;
@@ -24,41 +32,59 @@
   </style>
 </head>
 <body>
-  <h1 id="chord"></h1>
-  <script type="text/javascript">
-    let chord  = document.getElementById("chord");
+  <select name="speed" id="speed">
+    <option value="3000">3s</option>
+    <option value="2000">2s</option>
+    <option value="1000">1s</option>
+    <option value="500">0.5s</option>
+  </select>
 
-    function generateRandomNumber(a, b){
+  <h1 id="chord"></h1>
+
+  <script type="text/javascript">
+    let chord = document.getElementById("chord");
+    let speed = document.getElementById("speed");
+    let intervalId;
+
+    function generateRandomNumber(a, b) {
       let randomNumber = Math.floor(Math.random() * (b - a + 1)) + a;
       return randomNumber;
     }
 
     function getRandomBoolean() {
       return Math.random() >= 0.5;
-  }
+    }
 
-  function generateChord(){
+    function generateChord() {
+      const possibleChords = ["A", "B", "C", "D", "E", "F", "G"];
+      const chordVariations = ["#", "m"];
 
-    const possibleChords = ["A", "B", "C", "D", "E", "F", "G"];
-    const chordVariations = ["#", "m"]
+      let variationPattern = generateRandomNumber(0, 2);
+      let addVariation = getRandomBoolean() ? (variationPattern === 2 ? chordVariations.join('') : chordVariations[variationPattern]) : "";
+      let finalChord = possibleChords[generateRandomNumber(0, possibleChords.length - 1)] + addVariation;
 
-    let addVariation = getRandomBoolean() ? chordVariations[getRandomBoolean() ? 0 : 1] : "";
-    let finalChord = possibleChords[generateRandomNumber(0, possibleChords.length - 1)] + addVariation;
+      if (finalChord == "E#" || finalChord == "B#") {
+        return generateChord();
+      }
 
-    
-   if(finalChord == "E#" || finalChord == "B#"){
-    return generateChord()
-   }
+      return finalChord;
+    }
 
-    return finalChord ;
-  } 
+    function updateChord() {
+      const newChord = generateChord();
+      chord.innerHTML = newChord;
+    }
 
-  chord.innerHTML = generateChord();
+    function startInterval() {
+      clearInterval(intervalId);
+      intervalId = setInterval(updateChord, parseInt(speed.value));
+    }
 
-  setInterval(() => {
-   const newChord = generateChord(); 
-    chord.innerHTML = newChord;
-}, 3000);
+    speed.addEventListener('change', startInterval);
+
+    // Initial call to start the interval
+    updateChord();
+    startInterval();
   </script>
 </body>
 </html>
