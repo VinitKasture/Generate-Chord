@@ -42,6 +42,19 @@
 
   <h1 id="chord"></h1>
 
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+
+  <a href="/fretboard.html" >Learn fretboard</a>
   <script type="text/javascript">
     let chord = document.getElementById("chord");
     let speed = document.getElementById("speed");
@@ -64,7 +77,7 @@
       let addVariation = getRandomBoolean() ? (variationPattern === 2 ? chordVariations.join('') : chordVariations[variationPattern]) : "";
       let finalChord = possibleChords[generateRandomNumber(0, possibleChords.length - 1)] + addVariation;
 
-      if (finalChord == "E#" || finalChord == "B#") {
+      if (finalChord == "E#" || finalChord == "B#" || finalChord == "B#m") {
         return generateChord();
       }
 
@@ -83,7 +96,6 @@
 
     speed.addEventListener('change', startInterval);
 
-    // Initial call to start the interval
     updateChord();
     startInterval();
   </script>
